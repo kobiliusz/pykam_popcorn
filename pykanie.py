@@ -3,7 +3,7 @@ import tempfile
 import time
 import zipfile
 import json
-import icecream as ic
+from icecream import ic
 from pathlib import Path
 
 from selenium.common import TimeoutException
@@ -111,6 +111,6 @@ while True:
         random_link(driver)
         pause()
         driver.save_screenshot("last_screenshot.png")
-        ic.ic('screenshot saved.')
+        ic('screenshot saved.')
         hardened_get(driver, porno)
         pause()
