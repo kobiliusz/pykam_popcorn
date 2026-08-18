@@ -84,7 +84,6 @@ def random_link(driver):
             By.CSS_SELECTOR,
             'p[data-state*="menu"][data-state*="selected"][data-state*="link"]'
         )
-        if link.is_displayed()
     ]
 
     if links:
