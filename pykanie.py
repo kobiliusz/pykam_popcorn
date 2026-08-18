@@ -85,11 +85,7 @@ def random_link(driver):
 
     ic(links)
 
-    if links:
-        rlink = random.choice(links).get_attribute("href")
-        unspoof_referer(webd, addon)
-        ic("random link: " + rlink)
-        hardened_get(driver, rlink)
+    return random.choice(links).get_attribute("href")
 
 
 def hardened_get(driver, url):
@@ -124,7 +120,10 @@ while True:
         webd.save_screenshot(ss_path + "last_screenshot_1.png")
         ic('screenshot 1 saved.')
         pause()
-        random_link(webd)
+        rlink = random_link(webd)
+        ic('random link: ' + rlink)
+        unspoof_referer(webd, addon)
+        hardened_get(webd, rlink)
         pause()
         webd.save_screenshot(ss_path + "last_screenshot_2.png")
         ic('screenshot 2 saved.')
