@@ -15,6 +15,7 @@ from tbselenium.tbdriver import TorBrowserDriver
 
 porno = 'https://www.xvideos.com/video.kvdeipdea52/one_of_the_most_bizarre_pornos_in_the_world'
 nf = 'https://www.noweformy.org/'
+timeout = 120
 
 def pause():
     time.sleep(random.uniform(2, 5))
@@ -90,14 +91,14 @@ def random_link(driver):
             links.append(link)
 
     if links:
-        driver.set_page_load_timeout(20)
+        driver.set_page_load_timeout(timeout)
         try:
             random.choice(links).click()
         except TimeoutException:
             driver.execute_script("window.stop();")
 
 def hardened_get(driver, url):
-    driver.set_page_load_timeout(20)
+    driver.set_page_load_timeout(timeout)
     try:
         driver.get(url)
     except TimeoutException:
