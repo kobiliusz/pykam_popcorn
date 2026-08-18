@@ -1,3 +1,4 @@
+import logging
 import random
 import tempfile
 import time
@@ -9,6 +10,7 @@ from pathlib import Path
 
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 from tbselenium.tbdriver import TorBrowserDriver
 
 porno = 'https://www.xvideos.com/video.kvdeipdea52/one_of_the_most_bizarre_pornos_in_the_world'
@@ -102,8 +104,20 @@ def hardened_get(driver, url):
         driver.execute_script("window.stop();")
 
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+)
+
+logging.getLogger("selenium").setLevel(logging.DEBUG)
+logging.getLogger("urllib3").setLevel(logging.DEBUG)
+
+options = Options()
+options.log.level = "trace"
+
 while True:
-    with TorBrowserDriver("/home/kobi/tor-browser", headless=True) as driver:
+    with TorBrowserDriver("/home/kobi/tor-browser", headless=True, options=options,
+    tbb_logfile_path="/tmp/geckodriver.log") as driver:
         pause()
         addon = install_referer_spoofer(driver)
         hardened_get(driver, nf)
