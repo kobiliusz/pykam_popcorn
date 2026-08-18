@@ -103,7 +103,7 @@ def hardened_get(driver, url):
         driver.execute_script("window.stop();")
 
 
-pydevd_pycharm.settrace('192.168.0.182', port=5678, stdoutToServer=True, stderrToServer=True, suspend=False)
+pydevd_pycharm.settrace('192.168.0.182', port=5678, stdoutToServer=True, stderrToServer=True)
 while True:
     with TorBrowserDriver("/home/kobi/tor-browser", headless=True) as driver:
         pause()
