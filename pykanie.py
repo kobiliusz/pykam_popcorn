@@ -1,4 +1,3 @@
-import logging
 import random
 import tempfile
 import time
@@ -10,13 +9,14 @@ from pathlib import Path
 
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox import webdriver
 from selenium.webdriver.firefox.options import Options
-from tbselenium.tbdriver import TorBrowserDriver
+from selenium.webdriver.firefox.service import Service
 
 porno = 'https://www.xvideos.com/video.kvdeipdea52/one_of_the_most_bizarre_pornos_in_the_world'
 nf = 'https://www.noweformy.org/'
 ss_path = '/home/kobi/pykam_popcorn/'
-timeout = 120
+timeout = 30
 
 def pause():
     time.sleep(random.uniform(2, 5))
@@ -112,12 +112,12 @@ def hardened_get(driver, url):
             pass
 
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+service = Service(
+    executable_path="/home/kobi/geckodriver"
 )
 
 options = Options()
+options.headless = True
 options.set_preference(
     "general.useragent.override",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0"
@@ -126,8 +126,7 @@ options.add_argument("--width=1920")
 options.add_argument("--height=1080")
 
 while True:
-    with TorBrowserDriver("/home/kobi/tor-browser", headless=True, options=options,
-    tbb_logfile_path="/tmp/geckodriver.log") as driver:
+    with webdriver.WebDriver(options, service=service) as driver:
         pause()
         addon = install_referer_spoofer(driver)
         hardened_get(driver, nf)
