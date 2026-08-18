@@ -95,14 +95,20 @@ def random_link(driver):
         try:
             random.choice(links).click()
         except TimeoutException:
-            driver.execute_script("window.stop();")
+            try:
+                driver.execute_script("window.stop();")
+            except Exception:
+                pass
 
 def hardened_get(driver, url):
     driver.set_page_load_timeout(timeout)
     try:
         driver.get(url)
     except TimeoutException:
-        driver.execute_script("window.stop();")
+        try:
+            driver.execute_script("window.stop();")
+        except Exception:
+            pass
 
 
 logging.basicConfig(
