@@ -83,6 +83,8 @@ def random_link(driver):
         '//li[contains(@data-state,"menu") and contains(@data-state,"selected") and contains(@data-state,"link")]//a[@href]'
     )
 
+    ic(links)
+
     if links:
         rlink = random.choice(links).get_attribute("href")
         ic("random link: " + rlink)
