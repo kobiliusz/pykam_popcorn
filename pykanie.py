@@ -78,28 +78,18 @@ def unspoof_referer(driver, addon_id):
     driver.uninstall_addon(addon_id)
 
 def random_link(driver):
-    links = []
 
-    for link in driver.find_elements(By.TAG_NAME, "a"):
-        href = link.get_attribute("href")
-
-        if (
-                link.is_displayed()
-                and link.is_enabled()
-                and href
-                and href.startswith(("http://", "https://"))
-        ):
-            links.append(link)
+    links = [
+        link for link in driver.find_elements(
+            By.CSS_SELECTOR,
+            'p[data-state*="menu"][data-state*="selected"][data-state*="link"]'
+        )
+        if link.is_displayed()
+    ]
 
     if links:
-        driver.set_page_load_timeout(timeout)
-        try:
-            random.choice(links).click()
-        except TimeoutException:
-            try:
-                driver.execute_script("window.stop();")
-            except Exception:
-                pass
+        hardened_get(driver, random.choice(links).get_attribute("href"))
+
 
 def hardened_get(driver, url):
     driver.set_page_load_timeout(timeout)
@@ -126,17 +116,17 @@ options.add_argument("--width=1920")
 options.add_argument("--height=1080")
 
 while True:
-    with webdriver.WebDriver(options, service=service) as driver:
+    with webdriver.WebDriver(options, service=service) as webdriver:
         pause()
-        addon = install_referer_spoofer(driver)
-        hardened_get(driver, nf)
-        driver.save_screenshot(ss_path + "last_screenshot_1.png")
+        addon = install_referer_spoofer(webdriver)
+        hardened_get(webdriver, nf)
+        webdriver.save_screenshot(ss_path + "last_screenshot_1.png")
         ic('screenshot 1 saved.')
-        unspoof_referer(driver, addon)
+        unspoof_referer(webdriver, addon)
         pause()
-        random_link(driver)
+        random_link(webdriver)
         pause()
-        driver.save_screenshot(ss_path + "last_screenshot_2.png")
+        webdriver.save_screenshot(ss_path + "last_screenshot_2.png")
         ic('screenshot 2 saved.')
-        hardened_get(driver, porno)
+        hardened_get(webdriver, porno)
         pause()
