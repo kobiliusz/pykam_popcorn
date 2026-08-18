@@ -78,17 +78,16 @@ def unspoof_referer(driver, addon_id):
     driver.uninstall_addon(addon_id)
 
 def random_link(driver):
-
-    links = [
-        link for link in driver.find_elements(
-            By.CSS_SELECTOR,
-            'p[data-state*="menu"][data-state*="selected"][data-state*="link"]'
-        )
-    ]
+    links = driver.find_elements(
+        By.XPATH,
+        '//a[.//p[contains(@data-state,"menu") '
+        'and contains(@data-state,"selected") '
+        'and contains(@data-state,"link")]]'
+    )
 
     if links:
         rlink = random.choice(links).get_attribute("href")
-        ic('random link: ' + rlink)
+        ic("random link: " + rlink)
         hardened_get(driver, rlink)
 
 
