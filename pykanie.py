@@ -122,6 +122,8 @@ options.set_preference(
     "general.useragent.override",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0"
 )
+options.add_argument("--width=1920")
+options.add_argument("--height=1080")
 
 while True:
     with TorBrowserDriver("/home/kobi/tor-browser", headless=True, options=options,
