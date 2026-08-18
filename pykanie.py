@@ -56,7 +56,7 @@ def random_link(driver):
         random.choice(links).click()
 
 while True:
-    with TorBrowserDriver("/home/kobi/tor-browser") as driver:
+    with TorBrowserDriver("/home/kobi/tor-browser", headless=True) as driver:
         pause()
         spoof_referer(driver)
         driver.get(nf)
