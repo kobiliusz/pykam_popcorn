@@ -11,25 +11,28 @@ def pause():
 
 def spoof_referer(driver):
     driver.execute_script("""
-    window.changeReferer = function(details) {
-        let headers = details.requestHeaders.filter(
-            h => h.name.toLowerCase() !== "referer"
+        const referer = arguments[0];
+        const target = arguments[1];
+
+        window.changeReferer = function(details) {
+            let headers = details.requestHeaders.filter(
+                h => h.name.toLowerCase() !== "referer"
+            );
+
+            headers.push({
+                name: "Referer",
+                value: referer
+            });
+
+            return {requestHeaders: headers};
+        };
+
+        browser.webRequest.onBeforeSendHeaders.addListener(
+            window.changeReferer,
+            {urls: [target + "/*"]},
+            ["blocking", "requestHeaders"]
         );
-
-        headers.push({
-            name: "Referer",
-            value: "\"""" + porno + """\""
-        });
-
-        return {requestHeaders: headers};
-    };
-
-    browser.webRequest.onBeforeSendHeaders.addListener(
-        window.changeReferer,
-        {urls: [\"""" + nf + """\"/*"]},
-        ["blocking", "requestHeaders"]
-    );
-    """)
+    """, porno, nf)
 
 def unspoof_referer(driver):
     driver.execute_script("""
