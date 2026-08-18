@@ -88,7 +88,9 @@ def random_link(driver):
     ]
 
     if links:
-        hardened_get(driver, random.choice(links).get_attribute("href"))
+        rlink = random.choice(links).get_attribute("href")
+        ic('random link: ' + rlink)
+        hardened_get(driver, rlink)
 
 
 def hardened_get(driver, url):
