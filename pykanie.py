@@ -15,6 +15,7 @@ from tbselenium.tbdriver import TorBrowserDriver
 
 porno = 'https://www.xvideos.com/video.kvdeipdea52/one_of_the_most_bizarre_pornos_in_the_world'
 nf = 'https://www.noweformy.org/'
+ss_path = '/home/kobi/pykam_popcorn/'
 timeout = 120
 
 def pause():
@@ -116,11 +117,11 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s: %(message)s"
 )
 
-logging.getLogger("selenium").setLevel(logging.DEBUG)
-logging.getLogger("urllib3").setLevel(logging.DEBUG)
-
 options = Options()
-options.log.level = "trace"
+options.set_preference(
+    "general.useragent.override",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0"
+)
 
 while True:
     with TorBrowserDriver("/home/kobi/tor-browser", headless=True, options=options,
@@ -128,13 +129,13 @@ while True:
         pause()
         addon = install_referer_spoofer(driver)
         hardened_get(driver, nf)
-        driver.save_screenshot("last_screenshot_1.png")
+        driver.save_screenshot(ss_path + "last_screenshot_1.png")
         ic('screenshot 1 saved.')
         unspoof_referer(driver, addon)
         pause()
         random_link(driver)
         pause()
-        driver.save_screenshot("last_screenshot_2.png")
+        driver.save_screenshot(ss_path + "last_screenshot_2.png")
         ic('screenshot 2 saved.')
         hardened_get(driver, porno)
         pause()
