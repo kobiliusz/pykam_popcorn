@@ -3,8 +3,10 @@ import tempfile
 import time
 import zipfile
 import json
+import icecream as ic
 from pathlib import Path
 
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from tbselenium.tbdriver import TorBrowserDriver
 
@@ -85,17 +87,30 @@ def random_link(driver):
             links.append(link)
 
     if links:
-        random.choice(links).click()
+        driver.set_page_load_timeout(20)
+        try:
+            random.choice(links).click()
+        except TimeoutException:
+            driver.execute_script("window.stop();")
+
+def hardened_get(driver, url):
+    driver.set_page_load_timeout(20)
+    try:
+        driver.get(url)
+    except TimeoutException:
+        driver.execute_script("window.stop();")
+
 
 while True:
     with TorBrowserDriver("/home/kobi/tor-browser", headless=True) as driver:
         pause()
         addon = install_referer_spoofer(driver)
-        driver.get(nf)
+        hardened_get(driver, nf)
         unspoof_referer(driver, addon)
         pause()
         random_link(driver)
         pause()
         driver.save_screenshot("last_screenshot.png")
-        driver.get(porno)
+        ic.ic('screenshot saved.')
+        hardened_get(driver, porno)
         pause()
