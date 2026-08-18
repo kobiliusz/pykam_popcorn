@@ -4,7 +4,6 @@ import time
 import zipfile
 import json
 
-import pydevd_pycharm
 from icecream import ic
 from pathlib import Path
 
@@ -103,7 +102,6 @@ def hardened_get(driver, url):
         driver.execute_script("window.stop();")
 
 
-pydevd_pycharm.settrace('192.168.0.182', port=5678, stdoutToServer=True, stderrToServer=True)
 while True:
     with TorBrowserDriver("/home/kobi/tor-browser", headless=True) as driver:
         pause()
