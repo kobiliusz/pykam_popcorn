@@ -87,6 +87,7 @@ def random_link(driver):
 
     if links:
         rlink = random.choice(links).get_attribute("href")
+        unspoof_referer(webd, addon)
         ic("random link: " + rlink)
         hardened_get(driver, rlink)
 
@@ -122,7 +123,6 @@ while True:
         hardened_get(webd, nf)
         webd.save_screenshot(ss_path + "last_screenshot_1.png")
         ic('screenshot 1 saved.')
-        unspoof_referer(webd, addon)
         pause()
         random_link(webd)
         pause()
