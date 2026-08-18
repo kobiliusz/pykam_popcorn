@@ -79,11 +79,9 @@ def unspoof_referer(driver, addon_id):
 
 def random_link(driver):
     links = driver.find_elements(
-        By.XPATH,
-        '//li[contains(@data-state,"menu") and contains(@data-state,"selected") and contains(@data-state,"link")]//a[@href]'
+        By.CSS_SELECTOR,
+        'wix-dropdown-menu li a[href]'
     )
-
-    ic(links)
 
     return random.choice(links).get_attribute("href")
 
